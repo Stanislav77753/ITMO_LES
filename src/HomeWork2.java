@@ -86,16 +86,24 @@ public class HomeWork2 {
 
     //----------------------- Задание 2 ----------------------------------------
     public static void task2(){
-        int[] arr = new int[50];
+        int count = 0;
+        int start = 1;
+        int end = 99;
+        for (int i = start; i <= end; i++){ // определяем количество нечетный чисел
+            if(i % 2 != 0){
+                count+=1;
+            }
+        }
+        int[] arr = new int[count];
         int x = 1;
-        for(int i = 0; i <arr.length; i++){
+        for(int i = 0; i <arr.length; i++){ // выводим массив в порядке увеличения чисел
             arr[i] = i + x;
             x+=1;
             System.out.print(arr[i] + " ");
         }
         System.out.println();
         x = 50;
-        for(int i = arr.length - 1; i >= 0; i--){
+        for(int i = arr.length - 1; i >= 0; i--){// выводим массив в обратном порядке
             arr[i] = i + x;
             x-=1;
             System.out.print(arr[i] + " ");
@@ -217,7 +225,7 @@ public class HomeWork2 {
         for(int i = 0; i < arr.length; i++){
             for(int j = 0; j < arr[i].length; j++){
                 arr[i][j] = -99 + (int)(Math.random()*198);
-                if(arr[i][j] < 0 && arr[i][j] < -9){
+                if(arr[i][j] < 0 && arr[i][j] < -9){ // условия для отформатированного вывода на консоль
                     System.out.print(arr[i][j] + " ");
                 }
                 else if(arr[i][j] < 0){
@@ -248,11 +256,11 @@ public class HomeWork2 {
         int count;
         int count2;
 
-        for(int i = 0; i <arr.length; i++) {
-            count = 0;
-            count2 = 0;
-            for (int j = 0; j < arr[i].length; j++) {
-                if (i == 0){
+        for(int i = 0; i <arr.length; i++) { //роходим по всем строкам массива
+            count = 0; // счетчик повторения выпавшего числа
+            count2 = 0; // счетчик цифр в строке
+            for (int j = 0; j < arr[i].length; j++) { // проходим по вес столбам строки
+                if (i == 0){ // условие для превой строки
                     arr[i][j] = 2 + (int)(Math.random()*7);
                     if(count2 == 0){
                         System.out.print(arr[i][j] + " x ");
@@ -266,44 +274,57 @@ public class HomeWork2 {
                     b = true;
                     while(b){
                         arr[i][j] = 2 + (int)(Math.random()*7);
-                        if(j == 0) {
-                            for (int k = i - 1; k >= 0; k--) {
-                                if (arr[i][j] == arr[k][j] && count < 8) {
+                        if(j == 0) { // вывод первого числа 2-ой и всех полседующих строк
+                            for (int k = i - 1; k >= 0; k--) {// проводим проверку на совпадение выпавшего числа с
+                                // первыми числами предыдущих строк
+                                if (arr[i][j] == arr[k][j] && count < 8) { // если выпавшее число равно числу в
+                                    // одной из предыдущих строк и количество таких цифр меньше 8
                                     count += 1;
-                                    if (k == 0) {
+                                    if (k == 0) { // если дошли проверкой до первой строки
                                         b = false;
                                     }
                                 }
-                                else if (arr[i][j] == arr[k][j] && count > 8) {
+                                else if (arr[i][j] == arr[k][j] && count > 8) { // если выпавшее число равно числу
+                                    // одной из предыдущих строк и таких чисел больше 8, то прерываем цикл проверки и
+                                    // выбираем другое число
                                     break;
                                 }
-                                else if (arr[i][j] != arr[k][j] && count != 0) {
-                                    if (k == 0)
+                                else if (arr[i][j] != arr[k][j] && count != 0) {// если число не равно числу одной из
+                                    // предыдущих строк
+                                    if (k == 0) // дошли до первой строки
                                         b = false;
                                 }
-                                else if (arr[i][j] != arr[k][j] && count == 0) {
-                                    if (k == 0) {
+                                else if (arr[i][j] != arr[k][j] && count == 0) { // если число не равно числу одной из
+                                    // предыдущих строк и встречается впервые
+                                    if (k == 0) { // дошли до первой строки
                                         b = false;
                                     }
                                 }
                             }
                         }
-                        else{
+                        else{ // вывод второго числа 2-ой и всех полседующих строк
                             for( int k1 = i - 1; k1 >= 0; k1--){
-                                if(arr[i][0] == arr[k1][0] && arr[i][1] == arr[k1][1]){
+                                if(arr[i][0] == arr[k1][0] && arr[i][1] == arr[k1][1]){ // проверка на равенство двух
+                                    // строк
                                     break;
                                 }
-                                else if(arr[i][0] == arr[k1][1] && arr[i][1] == arr[k1][0]){
+                                else if(arr[i][0] == arr[k1][1] && arr[i][1] == arr[k1][0]){ // проверка на перекрестное
+                                    // равентсво двух строк
                                     break;
                                 }
-                                else if( arr[i][0] == arr[k1][0] && arr[i][1] != arr[k1][1]){
-                                    if( k1 == 0) b = false;
+                                else if( arr[i][0] == arr[k1][0] && arr[i][1] != arr[k1][1]){ // если первое число
+                                    // данной строки равно превому числу оной из предыдущих строк, а второе число данной
+                                    // строки не равно второму числу одной из предыдущих строк
+                                    if( k1 == 0) b = false; // дошли до превой строки
                                 }
-                                else if (arr[i][0] != arr[k1][0] && arr[i][1] == arr[k1][1]){
-                                    if( k1 == 0) b = false;
+                                else if (arr[i][0] != arr[k1][0] && arr[i][1] == arr[k1][1]){// если первое число
+                                    // данной строки не равно превому числу оной из предыдущих строк, а второе число
+                                    // данной строки равно второму числу одной из предыдущих строк
+                                    if( k1 == 0) b = false;// дошли до превой строки
                                 }
-                                else if (arr[i][0] != arr[k1][0] && arr[i][1] != arr[k1][1]){
-                                    if(k1 == 0) b = false;
+                                else if (arr[i][0] != arr[k1][0] && arr[i][1] != arr[k1][1]){ // если числа данной
+                                    // строки не равны числам других предыдущих строк
+                                    if(k1 == 0) b = false;// дошли до превой строки
                                 }
                             }
                         }
@@ -328,7 +349,7 @@ public class HomeWork2 {
         String str = sc1.nextLine();
         System.out.println("Введите подстроку, которую необходимо заменить");
         String str2 = sc1.nextLine();
-        System.out.println("Введите подстроку нак которую меняем");
+        System.out.println("Введите подстроку на которую меняем");
         String str3 = sc1.nextLine();
         String newstr = str.replace(str2, str3);
         System.out.println(newstr);
@@ -362,41 +383,46 @@ public class HomeWork2 {
         System.out.println("Введите адресс");
         Scanner sc = new Scanner(System.in);
         String str = sc.nextLine();
-        String str1 = str.replaceAll("[A-Za-zА-Яа-я,]", "");
-        int count = 0;
-        char[] ch = str1.toCharArray();
-        for(int i = 0; i < ch.length; i++){
-            if(ch[i] == '\u0020' && ch[i+1] !='\u0020'){
+        String str1 = str.replaceAll("[^0-9\\s+]", "");// Убираем все кроме цифр и пробелов
+        int count = 0; // счетчик чисел
+        char[] ch = str1.toCharArray(); // массив цифр и пробелов
+        for(int i = 0; i < ch.length; i++){ // считаем количество чисел для задания размера массива интов
+            if(ch[i] == '\u0020' && ch[i+1] !='\u0020'){ // если выбранный элемент является пробелом, а следующей цифрой
                 count+=1;
             }
         }
         int[] arr = new int[count];
         boolean b = true;
         String s = "";
-        int count2 = 0;
+        int count2 = 0; // счетчик пройденных элементов массива char
         for(int i = 0; i < arr.length; i++){
             b = true;
             s = "";
             while(b){
                 for(int j = count2; j < ch.length; j++){
-                    if(ch[j] == '\u0020' && ch[j+1] !='\u0020'){
+                    if(ch[j] == '\u0020' && ch[j+1] !='\u0020'){ // если выбраный элемент является пробелом, а
+                        // следующий нет
                         count2+=1;
                     }
-                    if(ch[j] == '\u0020' && ch[j+1] =='\u0020'){
+                    if(ch[j] == '\u0020' && ch[j+1] =='\u0020'){ // если выбраный элемент является пробелом и
+                        // следующий тоже
                         count2+=1;
                     }
-                    else if(j == ch.length - 1 && ch[j] !='\u0020'){
+                    else if(j == ch.length - 1 && ch[j] !='\u0020'){ // если выбраный элемент является последним в
+                        // массиве char и не является пробелом
                         count2+=1;
                         s += ch[j];
                         break;
                     }
-                    else if (ch[j] !='\u0020' && ch[j+1] != '\u0020'){
+                    else if (ch[j] !='\u0020' && ch[j+1] != '\u0020'){ // если выбраный элемент не является пробелом и
+                        // следующий элемент тоже
                         count2+=1;
                         s += ch[j];
 
                     }
 
-                    else if(ch[j] !='\u0020' && ch[j+1] == '\u0020'){
+                    else if(ch[j] !='\u0020' && ch[j+1] == '\u0020'){ // если выбраный элемент не является пробелом, а
+                        // следующий элемент является пробелом
                         count2+=1;
                         s += ch[j];
                         break;
@@ -407,7 +433,5 @@ public class HomeWork2 {
             arr[i] = Integer.parseInt(s);
         }
         System.out.println(Arrays.toString(arr));
-
-
     }
 }
