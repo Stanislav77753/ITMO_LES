@@ -133,14 +133,14 @@ public class HomeWork2 {
         int sum2 = 0;
 
         for(int i = 0; i < arr1.length; i++) {
-            arr1[i] = 0 + (int) (Math.random() * 5);
+            arr1[i] = (int) (Math.random() * 5);
             System.out.print(arr1[i] + " ");
             sum1 += arr1[i];
         }
         System.out.println();
 
         for(int i = 0; i < arr2.length; i++) {
-            arr2[i] = 0 + (int) (Math.random() * 5);
+            arr2[i] =(int) (Math.random() * 5);
             System.out.print(arr2[i] + " ");
             sum2 += arr2[i];
         }
@@ -251,94 +251,26 @@ public class HomeWork2 {
 
     //----------------------- Задание 8 ----------------------------------------
     public static void task8(){
-        int[][] arr = new int[15][2];
-        boolean b;
-        int count;
-        int count2;
-
-        for(int i = 0; i <arr.length; i++) { //роходим по всем строкам массива
-            count = 0; // счетчик повторения выпавшего числа
-            count2 = 0; // счетчик цифр в строке
-            for (int j = 0; j < arr[i].length; j++) { // проходим по вес столбам строки
-                if (i == 0){ // условие для превой строки
-                    arr[i][j] = 2 + (int)(Math.random()*7);
-                    if(count2 == 0){
-                        System.out.print(arr[i][j] + " x ");
-                        count2+=1;
-                    }
-                    else{
-                        System.out.print(arr[i][j]);
-                    }
+        int count = 0;
+        int[][] arr = new int[2][15];
+        while(count < 15){
+            int row = 2 + (int)(Math.random()*7);
+            int col = 2 + (int)(Math.random()*7);
+            for(int i = 0; i < count +1; i++){
+                if(((arr[0][i] == row) && (arr[1][i] == col))|| ((arr[0][i] == col) && (arr[1][i] == row))){
+                    break;
                 }
-                else {
-                    b = true;
-                    while(b){
-                        arr[i][j] = 2 + (int)(Math.random()*7);
-                        if(j == 0) { // вывод первого числа 2-ой и всех полседующих строк
-                            for (int k = i - 1; k >= 0; k--) {// проводим проверку на совпадение выпавшего числа с
-                                // первыми числами предыдущих строк
-                                if (arr[i][j] == arr[k][j] && count < 8) { // если выпавшее число равно числу в
-                                    // одной из предыдущих строк и количество таких цифр меньше 8
-                                    count += 1;
-                                    if (k == 0) { // если дошли проверкой до первой строки
-                                        b = false;
-                                    }
-                                }
-                                else if (arr[i][j] == arr[k][j] && count > 8) { // если выпавшее число равно числу
-                                    // одной из предыдущих строк и таких чисел больше 8, то прерываем цикл проверки и
-                                    // выбираем другое число
-                                    break;
-                                }
-                                else if (arr[i][j] != arr[k][j] && count != 0) {// если число не равно числу одной из
-                                    // предыдущих строк
-                                    if (k == 0) // дошли до первой строки
-                                        b = false;
-                                }
-                                else if (arr[i][j] != arr[k][j] && count == 0) { // если число не равно числу одной из
-                                    // предыдущих строк и встречается впервые
-                                    if (k == 0) { // дошли до первой строки
-                                        b = false;
-                                    }
-                                }
-                            }
-                        }
-                        else{ // вывод второго числа 2-ой и всех полседующих строк
-                            for( int k1 = i - 1; k1 >= 0; k1--){
-                                if(arr[i][0] == arr[k1][0] && arr[i][1] == arr[k1][1]){ // проверка на равенство двух
-                                    // строк
-                                    break;
-                                }
-                                else if(arr[i][0] == arr[k1][1] && arr[i][1] == arr[k1][0]){ // проверка на перекрестное
-                                    // равентсво двух строк
-                                    break;
-                                }
-                                else if( arr[i][0] == arr[k1][0] && arr[i][1] != arr[k1][1]){ // если первое число
-                                    // данной строки равно превому числу оной из предыдущих строк, а второе число данной
-                                    // строки не равно второму числу одной из предыдущих строк
-                                    if( k1 == 0) b = false; // дошли до превой строки
-                                }
-                                else if (arr[i][0] != arr[k1][0] && arr[i][1] == arr[k1][1]){// если первое число
-                                    // данной строки не равно превому числу оной из предыдущих строк, а второе число
-                                    // данной строки равно второму числу одной из предыдущих строк
-                                    if( k1 == 0) b = false;// дошли до превой строки
-                                }
-                                else if (arr[i][0] != arr[k1][0] && arr[i][1] != arr[k1][1]){ // если числа данной
-                                    // строки не равны числам других предыдущих строк
-                                    if(k1 == 0) b = false;// дошли до превой строки
-                                }
-                            }
-                        }
-                    }
-                    if(count2 == 0) {
-                        System.out.print(arr[i][j] + " x ");
-                        count2+=1;
-                    }
-                    else{
-                        System.out.print(arr[i][j]);
-                    }
+                else if(((arr[0][i] != row) && (arr[1][i] != col) && i == count)|| ((arr[0][i] != col) &&
+                        (arr[1][i] != row)&& i == count)){
+                    arr[0][count] = row;
+                    arr[1][count] = col;
+                    count ++;
+                    break;
                 }
             }
-            System.out.println();
+        }
+        for(int i = 0; i < 15; i++){
+            System.out.println(arr[0][i] + " x " + arr[1][i]);
         }
     }
 
