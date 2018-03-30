@@ -1,12 +1,9 @@
 package HomeWork_30_03;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class Library {
     private int bookCounter;
-    private int librarySize = 150;
+    private int librarySize = 100;
     private HashMap<Book, Integer> booksMap;
 
     Library(){
@@ -14,14 +11,14 @@ public class Library {
     }
 
     public void putBook (Book book, int quantity){
-        if(librarySize>bookCounter+quantity){
+        if(librarySize>bookCounter + quantity){
             if (booksMap.containsKey(book)){
                 booksMap.computeIfPresent(book,(k, v) -> v + quantity);
             }
             else {
                 booksMap.put(book,quantity);
             }
-            bookCounter = bookCounter+quantity;
+            bookCounter = bookCounter + quantity;
 
         }
         else {
@@ -34,7 +31,7 @@ public class Library {
         if (booksMap.containsKey(book)){
             if(booksMap.get(book) >= quantity){
                 booksMap.computeIfPresent(book,(k, v) -> v - quantity);
-                bookCounter=bookCounter-quantity;
+                bookCounter=bookCounter - quantity;
                 return quantity;
             }
             else {
