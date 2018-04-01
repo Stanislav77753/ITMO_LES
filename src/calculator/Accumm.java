@@ -9,6 +9,7 @@ public class Accumm {
 
     }
     protected void accum(int a){
+
         this.value =this.operation.execute(this.value,a);
     }
     public int getValue(){
@@ -16,9 +17,9 @@ public class Accumm {
     }
 
     public static void main(String[] args) {
-        Accumm acc = new Accumm(new Multiply(), 3);
+        Accumm acc = new Accumm(new Divide(), 3);
         acc.accum(3);
-        System.out.println(acc.getValue());
+        System.out.println("Текущее значение равно " + acc.getValue());
 
     }
 }
