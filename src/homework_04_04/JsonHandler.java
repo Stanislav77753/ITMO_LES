@@ -1,16 +1,15 @@
 package homework_04_04;
 
-import java.util.HashMap;
+public class JsonHandler implements Handler {
 
-public class JsonHandler extends Handler {
 
     @Override
-    public void writeInFile(String filename, HashMap<String, String> map){
-        //Записываем в файл
+    public void writeInFile() {
+        // write smth in file
     }
 
     @Override
     public void readFromFile() {
-        // читаем из файла
+        // read from file
     }
 }
