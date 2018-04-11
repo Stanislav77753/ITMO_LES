@@ -180,26 +180,48 @@ public class ReaderFromFile {
         }
     }
 
-    public static List<String> splitOnLetter(List<String> lines){
-        List<String> listLetters = new ArrayList<>();
+    public static List<Character> splitOnLetter(List<String> lines){
+        //List<String> listLetters = new ArrayList<>();
+        List<Character> listChar = new ArrayList<>();
         outer: for(String str : lines) {
             String[] arr = str.replaceAll("[^a-zA-Z]", "").trim().replaceAll("\\s+", "").split("");
             if(arr[0].trim().isEmpty()){
                 continue outer;
             }
             for(int i = 0; i < arr.length; i++){
-                listLetters.add(arr[i]);
+                char[] char1 = arr[i].toCharArray();
+                for(int j = 0; j < arr[i].length(); j++){
+                    listChar.add(char1[j]);
+                }
+
+
             }
         }
-        return listLetters;
+        return listChar;
     }
 
-    public static int nLetter(List<String> listLetters){
+    public static int nLetter(List<Character> listChar){
         int n = 0;
-        for(String str : listLetters){
+        for(Character ch : listChar){
             n+=1;
         }
         return n;
+    }
+
+    public static void printNLetter(List<Character> listChar, char[] charLet, int nLetter){
+        int count;
+        for(int i = 0; i < charLet.length; i++){
+            String s = String.valueOf(charLet[i]);
+            count = 0;
+            for(Character ch : listChar){
+                String ss = String.valueOf(ch);
+                if(s.compareToIgnoreCase(ss)==0){
+                    count+=1;
+
+                }
+            }
+            System.out.println("Буква " + charLet[i] + " встречается в процентах " + (100*((double)count/(double)nLetter)) +" %");
+        }
     }
 
     @Override

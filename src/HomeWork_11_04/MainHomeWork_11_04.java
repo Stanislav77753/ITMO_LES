@@ -10,7 +10,7 @@ public class MainHomeWork_11_04 {
         String[] arr = {"a", "an", "the", "on", "and", "in", "if", "from", "I", "he", "she", "it", "you", "to", "of",
                 "it", "me", "by", "but", "so", "s", "t", "with", "my", "don", "at", "for", "is", "are", "am",
                 "chapter", "Leo", "Tolstoy", "Tolstoi"};
-        Character[] charLet ={'a', 'b', 'c', 'd', 'e', 'f','g', 'h', 'i','j', 'k', 'l','m', 'n', 'o','p', 'q', 'r',
+        char[] charLet ={'a', 'b', 'c', 'd', 'e', 'f','g', 'h', 'i','j', 'k', 'l','m', 'n', 'o','p', 'q', 'r',
                 's', 't', 'u','v', 'w', 'x','y', 'z'};
 
         // Лист с содержимым книги
@@ -30,9 +30,9 @@ public class MainHomeWork_11_04 {
         System.out.println(i);*/
 
         // Выводим по группам слова
-        int lenLet = book.maxLenghtWord(bookList2);
+       /* int lenLet = book.maxLenghtWord(bookList2);
         HashMap<Integer, List<String>> mapGroup = book.getMapGroup(lenLet, bookList2);
-        book.printMapGroup(mapGroup);
+        book.printMapGroup(mapGroup);*/
 
         // Выводим топ 10 повторяемых слов
         /*int maxLenghtWord = book.maxLenghtWord(bookList2); //максимальный размер слова в списке
@@ -40,7 +40,8 @@ public class MainHomeWork_11_04 {
         HashMap<String, Integer> mapTop = book.top10(mapWord); // Коллекция c топ 10 слов
         ReaderFromFile.printTop10(mapTop);*/
 
-        /*List<String> listLetters = ReaderFromFile.splitOnLetter(bookList);
-        System.out.println(ReaderFromFile.nLetter(listLetters));*/
+        List<Character> listLetters = ReaderFromFile.splitOnLetter(bookList);
+        int nLetter = ReaderFromFile.nLetter(listLetters);
+        ReaderFromFile.printNLetter(listLetters, charLet, nLetter);
     }
 }
