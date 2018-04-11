@@ -23,17 +23,22 @@ public class MainHomeWork_11_04 {
 
         // Лист без элементов из массива arr
         List<String> bookList2 = ReaderFromFile.splitLines(bookList, arr);
-        System.out.println(bookList2);
+        //System.out.println(bookList2);
 
         // Выводим частоту слова, которую передаем в аргумент метода
         /*int i = ReaderFromFile.countWord("Peace", bookList2);
         System.out.println(i);*/
 
+        // Выводим по группам слова
+        int lenLet = book.maxLenghtWord(bookList2);
+        HashMap<Integer, List<String>> mapGroup = book.getMapGroup(lenLet, bookList2);
+        book.printMapGroup(mapGroup);
+
         // Выводим топ 10 повторяемых слов
-        int maxLenghtWord = book.maxLenghtWord(bookList2); //максимальный размер слова в списке
+        /*int maxLenghtWord = book.maxLenghtWord(bookList2); //максимальный размер слова в списке
         HashMap<String, Integer> mapWord = book.mapWords(bookList2); // Коллекция не повторяющихся слов и их повторяемость
         HashMap<String, Integer> mapTop = book.top10(mapWord); // Коллекция c топ 10 слов
-        ReaderFromFile.printTop10(mapTop);
+        ReaderFromFile.printTop10(mapTop);*/
 
         /*List<String> listLetters = ReaderFromFile.splitOnLetter(bookList);
         System.out.println(ReaderFromFile.nLetter(listLetters));*/
