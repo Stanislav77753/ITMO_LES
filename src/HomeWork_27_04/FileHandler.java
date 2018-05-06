@@ -8,13 +8,11 @@ import java.util.List;
 public class FileHandler {
 
     public void copyFileUsingStream(File source, File target) throws IOException {
-        try (InputStream is = new FileInputStream(source)) {
-            byte[] buffer = new byte[1024];
+        try (InputStream is = new BufferedInputStream(new FileInputStream(source));
+             OutputStream os = new BufferedOutputStream(new FileOutputStream(target))) {
             int len;
-            while ((len = is.read(buffer)) > 0) {
-                try (OutputStream os = new FileOutputStream(target)) {
-                    os.write(buffer, 0, len);
-                }
+            while ((len = is.read()) > 0) {
+                os.write(len);
             }
         }
     }
