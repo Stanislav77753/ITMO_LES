@@ -43,7 +43,7 @@ public class TestMain {
         File sourceEncodeDecode = new File("src/HomeWork_27_04/part1.txt");
         File encode = new File("src/HomeWork_27_04/encode.txt");
         File decode = new File("src/HomeWork_27_04/decode.txt");
-        String key = "passwordPassword";
+        String key = "password";
         try {
             ed.encodeDecodeFile(sourceEncodeDecode, encode, key);
         } catch (IOException e) {
@@ -54,6 +54,23 @@ public class TestMain {
 //
         try {
             ed.encodeDecodeFile(encode, decode, key);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Зашифровать файл файлом
+        File encodeFile = new File("src/HomeWork_27_04/encodeFile.txt");
+        File decodeFile = new File("src/HomeWork_27_04/decodeFile.txt");
+        File password = new File("src/HomeWork_27_04/password.txt");
+
+        try {
+            ed.encodeDecodeFile(sourceEncodeDecode, encodeFile, password);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // Расшифровать файл файлом
+        try {
+            ed.encodeDecodeFile(encodeFile, decodeFile, password);
         } catch (IOException e) {
             e.printStackTrace();
         }
