@@ -1,49 +1,57 @@
 package HomeTaskPizzeria;
 
-import sun.awt.windows.ThemeReader;
-
+import java.util.Queue;
 import java.util.Scanner;
 
 public class Client extends Thread {
-    private Order order;
+    private Queue<Order> orderQueue;
+    private Queue<Order> orderCooker;
+    private Order orderClient;
     private String nameClient;
 
-    public Client(String name, Order order){
+
+    public Client(String name, Queue<Order> orderQueue, Queue<Order> orderCooker, Order orderClient){
         this.nameClient = name;
-        this.order = order;
-    }
-    private void makeAnOrder(){
-            synchronized (this.order) {
-                Scanner scn = new Scanner(System.in);
-                System.out.println("Введите выбранную пиццу" + "   " + Thread.currentThread().getClass());
-                order.setPizza(scn.nextLine());
-                System.out.println("Введите выбранный сок" + "   " + Thread.currentThread().getClass());
-                order.setJuice(scn.nextLine());
-                order.readyClient = true;
-                System.out.println("Заказ клиентом сделан и передан официанту" + "   " + Thread.currentThread().getClass());
-                order.notify();
+        this.orderQueue = orderQueue;
+        this.orderClient = orderClient;
+        this.orderCooker = orderCooker;
 
-            }
+
+    }
+    private void makeAnOrder() {
+        synchronized (orderQueue) {
+            orderClient.setReadyClient(true);
+            System.out.println(nameClient + " заказ сделал и передал его официанту");
+            orderQueue.add(orderClient);
+            orderQueue.notifyAll();
+
+        }
     }
 
-    private void receiveOrder(){
-        while (true) {
-            synchronized (this.order) {
-                try {
-                    order.wait(1);
-                    if (order.readyOrder == true) {
-                        System.out.println("Заказ получен клиентом" + "   " + Thread.currentThread().getClass());
-                        order.readyOrder = false;
-                        break;
+
+    private void receiveOrder() {
+        synchronized (orderCooker) {
+            while (true) {
+                if(orderCooker.peek() == null){
+                    try {
+                        orderCooker.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                }
+                if(orderCooker.peek().isReadyOrder() == true){
+                    Order order = orderCooker.remove();
+                    System.out.println(nameClient + " получил заказ");
+                    break;
                 }
             }
         }
     }
+
     @Override
     public void run() {
+        Thread.currentThread().setName(nameClient);
+        System.out.println(Thread.currentThread().getName() + " стартовал");
         makeAnOrder();
         receiveOrder();
     }
