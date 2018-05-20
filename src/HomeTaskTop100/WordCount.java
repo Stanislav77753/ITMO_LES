@@ -36,7 +36,6 @@ public class WordCount {
         List<WordCountThread> workers = new ArrayList<>();
         int fromIndex;
         int toIndex = 0;
-
         //Создаем потоки, передаем им участки книги и сет
         for(int i = 1; i <= cpus; i++){
             fromIndex = toIndex;
@@ -95,7 +94,7 @@ public class WordCount {
         // Метод собирает карту без символов, не нужных слов (предлоги и тд, который помещены в сет из файла words)
         private HashMap<String, Integer> splitLines(List<String> words, Set<String> excWords){
             outer:for(String word : words) { // Считываем строку
-                String[] arr = word.replaceAll("[^a-zA-Z]", " ").
+                String[] arr = word.toLowerCase().replaceAll("[^a-zA-Z]", " ").
                         trim().replaceAll("\\s+", " ").split(" "); //Делим строку на слова
                 if (arr[0].trim().isEmpty()) { // проверяем является ли строка пустой
                     continue outer;
@@ -103,7 +102,7 @@ public class WordCount {
                 for(String s : arr){ // проверяем на совпадение слов со словами из сета и затем добавляем в карту
                     if(!excWords.contains(s)){
                         if (wordCnt.containsKey(s)) { // сли слово в карте уже есть, увеличиваем значение
-                            wordCnt.put(s.toLowerCase(), wordCnt.get(s) + 1);
+                            wordCnt.put(s, wordCnt.get(s) + 1);
                         } else {
                             wordCnt.put(s, 1);
                         }

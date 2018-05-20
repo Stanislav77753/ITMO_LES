@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.BiFunction;
@@ -23,8 +24,9 @@ public class WordCountQueue {
         BufferedReader rdr = new BufferedReader(new InputStreamReader(in));
         List<String> lines = rdr.lines().collect(toList());
         int cpus = Runtime.getRuntime().availableProcessors();
-        List<WordCountQueue.WordCountThread> workers = new ArrayList<>();
+        List<WordCountThread> workers = new ArrayList<>();
         BlockingQueue<String> linesQueue = new LinkedBlockingQueue();
+        BlockingQueue<HashMap<String, Integer>> mapQueue = new ArrayBlockingQueue<>(cpus);
 
         // Поток чтения файла со словами, которые надо исключить
         InputStream in2 = WordCount.class.getClassLoader().getResourceAsStream("words.txt");
@@ -42,27 +44,32 @@ public class WordCountQueue {
         }
 
         for(int i = 1; i <= cpus; i++){
-//
-            WordCountThread wct = new WordCountThread(linesQueue, set);
+            WordCountThread wct = new WordCountThread(linesQueue, set, mapQueue);
             workers.add(wct);
         }
-
-
 
         for(WordCountThread worker : workers){
             worker.start();
         }
         linesQueue.addAll(lines);
-        for (int i = 0; i < cpus; i++) {
-            linesQueue.add(STOP);
-        }
+        linesQueue.add(STOP);
+
         for(WordCountThread worker : workers){
             worker.join();
         }
-        for(WordCountThread worker : workers){
-            worker.uniteMapsWords();
-        }
 
+        for(HashMap<String, Integer> mQueue : mapQueue){
+            for(Map.Entry<String, Integer> map : mQueue.entrySet()){
+                String key = map.getKey();
+                Integer value = map.getValue();
+                if(result.containsKey(key)){
+                    result.put(key, result.get(key) + value);
+                }
+                else{
+                    result.put(key,value);
+                }
+            }
+        }
 
         treeMap.putAll(result);
         int countWords = 0;
@@ -83,15 +90,19 @@ public class WordCountQueue {
     }
 
     private static class WordCountThread extends Thread{
-        private  BlockingQueue<String> linesQueue;
-        private HashMap<String, Integer> wordCnt;
+        private final BlockingQueue<String> linesQueue;
+        private HashMap<String, Integer> wordCnt = new HashMap<>();
+        BlockingQueue<HashMap<String, Integer>> mapQueue;
         private Set<String> excWords;
 
 
-        public WordCountThread(BlockingQueue<String> linesQueue, Set<String> excWords ) {
+        public WordCountThread(BlockingQueue<String> linesQueue, Set<String> excWords,
+                               BlockingQueue<HashMap<String, Integer>> mapQueue ) {
             this.linesQueue = linesQueue;
-            this.wordCnt = new HashMap<>();
+            this.mapQueue = mapQueue;
             this.excWords = excWords;
+
+
         }
 
 
@@ -101,44 +112,31 @@ public class WordCountQueue {
                 try {
                     String line = linesQueue.take();
                     if (line == STOP){
+                        linesQueue.add(STOP);
                         break;
                     }
-
-                    splitLines(line, excWords);
+                    splitAndUniteInMap(line, excWords);
 
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    return;
                 }
             }
-
+            mapQueue.add(wordCnt);
         }
 
-        private HashMap<String, Integer> splitLines(String line, Set<String> excWords){
-            String[] arr = line.replaceAll("[^a-zA-Z]", " ").
+        private void splitAndUniteInMap(String line, Set<String> excWords){
+            String[] arr = line.toLowerCase().replaceAll("[^a-zA-Z]", " ").
                     trim().replaceAll("\\s+", " ").split(" "); //Делим строку на слова
             outer:for(String word : arr){
                 if (word.trim().isEmpty()) { // проверяем является ли строка пустой
                     continue outer;
                 }
                 if(!excWords.contains(word)){
-                    if (wordCnt.containsKey(word)) { // сли слово в карте уже есть, увеличиваем значение
-                        wordCnt.put(word.toLowerCase(), wordCnt.get(word) + 1);
+                    if (wordCnt.containsKey(word)) { // если слово в карте уже есть, увеличиваем значение
+                        wordCnt.put(word, wordCnt.get(word) + 1);
                     } else {
                         wordCnt.put(word, 1);
                     }
-                }
-            }
-            return wordCnt;
-        }
-        private void uniteMapsWords(){
-            for(Map.Entry<String, Integer> entry : this.wordCnt.entrySet()){
-                String word = entry.getKey();
-                Integer value = entry.getValue();
-                if(result.containsKey(word)){
-                    result.put(word, result.get(word) + value);
-                }
-                else{
-                    result.put(word, value);
                 }
             }
         }
